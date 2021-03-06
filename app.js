@@ -24,12 +24,183 @@ app.get('/',(req,res)=>{
 	}));
 });
 
+const date_curr = '0326';
+const date_curr2 = '0625';
+const date_curr3 = '0924';
+const date_curr4 = '1231';
+
 app.get('/bitcoin',(req,res)=>{
-	res.render('bitcoin',{data:[]});
+	const basis = axios.get('https://ftx.com/api/markets/BTC/USD/candles?resolution=86400');
+	const futures = axios.get('https://ftx.com/api/markets/BTC-'+date_curr+'/candles?resolution=86400');
+	const futures2 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr2+'/candles?resolution=86400');
+	const futures3 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr3+'/candles?resolution=86400');
+	const futures4 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr4+'/candles?resolution=86400')
+
+axios.all([basis,futures, futures2, futures3, futures4]).then(axios.spread((...responses)=>{
+    const resultBasis = responses[0];
+    const resultFutures = responses[1];
+    const resultFutures2 = responses[2];
+    const resultFutures3 = responses[3];
+    const resultFutures4 = responses[4];
+
+    let basisCount = resultBasis.data.result.length-1;
+    let futuresCount = resultFutures.data.result.length-1;
+    let futuresCount2 = resultFutures2.data.result.length-1;
+    let futuresCount3 = resultFutures3.data.result.length-1;
+    let futuresCount4 = resultFutures4.data.result.length-1;
+
+    let timeframe = [];
+    let basis = [];
+    let futures = [];
+    let spread = [];
+    let futures2 = [];
+    let spread2 = [];
+    let futures3 = [];
+    let spread3 = [];
+    let futures4 = [];
+    let spread4 = [];
+    let text = '';
+	let data = [];
+
+    while(basisCount>=0){
+        let curr = '';
+		let current = {};
+        timeframe.unshift(resultBasis.data.result[basisCount].startTime);
+        curr = timeframe[0];
+		current.date = timeframe[0];
+        basis.unshift(resultBasis.data.result[basisCount].open);
+		current.price = basis[0];
+        if(futuresCount>=0){
+            futures.unshift(resultFutures.data.result[futuresCount].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures.data.result[futuresCount].open;
+            spread.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread[0];
+			current.first = spread[0].toFixed(2);
+        }
+        if(futuresCount2>=0){
+            futures2.unshift(resultFutures2.data.result[futuresCount2].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures2.data.result[futuresCount2].open;
+            spread2.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread2[0];
+			current.second = spread2[0].toFixed(2);
+        }
+        if(futuresCount3>=0){
+            futures3.unshift(resultFutures3.data.result[futuresCount3].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures3.data.result[futuresCount3].open;
+            spread3.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread3[0];
+			current.third = spread3[0].toFixed(2);
+        }
+        if(futuresCount4>=0){
+            futures4.unshift(resultFutures4.data.result[futuresCount4].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures4.data.result[futuresCount4].open;
+            spread4.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread4[0];
+			current.fourth = spread4[0].toFixed(2);
+        }
+
+		data.push(current);
+        text = text + '\n' + curr;
+        futuresCount--;
+        futuresCount2--;
+        futuresCount3--;
+        futuresCount4--;
+        basisCount--;
+    }
+
+	res.render('bitcoin',{data:data});
+}));
 });
 
 app.get('/ethereum',(req,res)=>{
-	res.render('ethereum',{data:[]});
+	const basis = axios.get('https://ftx.com/api/markets/ETH/USD/candles?resolution=86400');
+	const futures = axios.get('https://ftx.com/api/markets/ETH-'+date_curr+'/candles?resolution=86400');
+	const futures2 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr2+'/candles?resolution=86400');
+	const futures3 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr3+'/candles?resolution=86400');
+	const futures4 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr4+'/candles?resolution=86400')
+
+axios.all([basis,futures, futures2, futures3, futures4]).then(axios.spread((...responses)=>{
+    const resultBasis = responses[0];
+    const resultFutures = responses[1];
+    const resultFutures2 = responses[2];
+    const resultFutures3 = responses[3];
+    const resultFutures4 = responses[4];
+
+    let basisCount = resultBasis.data.result.length-1;
+    let futuresCount = resultFutures.data.result.length-1;
+    let futuresCount2 = resultFutures2.data.result.length-1;
+    let futuresCount3 = resultFutures3.data.result.length-1;
+    let futuresCount4 = resultFutures4.data.result.length-1;
+
+    let timeframe = [];
+    let basis = [];
+    let futures = [];
+    let spread = [];
+    let futures2 = [];
+    let spread2 = [];
+    let futures3 = [];
+    let spread3 = [];
+    let futures4 = [];
+    let spread4 = [];
+    let text = '';
+	let data = [];
+
+    while(basisCount>=0){
+        let curr = '';
+		let current = {};
+        timeframe.unshift(resultBasis.data.result[basisCount].startTime);
+        curr = timeframe[0];
+		current.date = timeframe[0];
+        basis.unshift(resultBasis.data.result[basisCount].open);
+		current.price = basis[0];
+        if(futuresCount>=0){
+            futures.unshift(resultFutures.data.result[futuresCount].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures.data.result[futuresCount].open;
+            spread.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread[0];
+			current.first = spread[0].toFixed(2);
+        }
+        if(futuresCount2>=0){
+            futures2.unshift(resultFutures2.data.result[futuresCount2].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures2.data.result[futuresCount2].open;
+            spread2.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread2[0];
+			current.second = spread2[0].toFixed(2);
+        }
+        if(futuresCount3>=0){
+            futures3.unshift(resultFutures3.data.result[futuresCount3].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures3.data.result[futuresCount3].open;
+            spread3.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread3[0];
+			current.third = spread3[0].toFixed(2);
+        }
+        if(futuresCount4>=0){
+            futures4.unshift(resultFutures4.data.result[futuresCount4].open);
+            const b = resultBasis.data.result[basisCount].open;
+            const f = resultFutures4.data.result[futuresCount4].open;
+            spread4.unshift((f-b)*100/b);
+            curr = curr + ' ' + spread4[0];
+			current.fourth = spread4[0].toFixed(2);
+        }
+
+		data.push(current);
+        text = text + '\n' + curr;
+        futuresCount--;
+        futuresCount2--;
+        futuresCount3--;
+        futuresCount4--;
+        basisCount--;
+    }
+
+	res.render('ethereum',{data:data});
+}));
 });
 
 app.get('/kimp',(req,res)=>{
