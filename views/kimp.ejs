@@ -1,0 +1,16 @@
+<%- include('logoarea') %>
+<h1>김프 히스토리</h1>
+<table border=1>
+    <tr>
+        <td>날짜</td>
+        <td>가격</td>
+        <td>김프</td>
+    </tr>
+    <% for(let i = 0 ; i < data.length ; i++){ %>
+        <tr>
+            <td>data[i].date</td>
+            <td>data[i].price</td>
+            <td>data[i].kimp</td>
+        </tr>
+    <% } %>
+</table>

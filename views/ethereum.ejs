@@ -1,0 +1,22 @@
+<%- include('logoarea') %>
+<h1>이더리움 프리미엄</h1>
+<table border=1>
+    <tr>
+        <td>날짜</td>
+        <td>가격</td>
+        <td>근월물</td>
+        <td>+3월물</td>
+        <td>+6월물</td>
+        <td>+9월물</td>
+    </tr>
+    <% for(let i = 0 ; i < data.length ; i++){ %>
+        <tr>
+            <td>data[i].date</td>
+            <td>data[i].price</td>
+            <td>data[i].first</td>
+            <td>data[i].second</td>
+            <td>data[i].third</td>
+            <td>data[i].fourth</td>
+        </tr>
+    <% } %>
+</table>
