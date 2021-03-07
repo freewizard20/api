@@ -29,12 +29,45 @@ const date_curr2 = '0625';
 const date_curr3 = '0924';
 const date_curr4 = '1231';
 
+app.get('/current',(req,res)=>{
+    const basis = axios.get('https://ftx.com/api/markets/BTC/USD');
+    const futures = axios.get('https://ftx.com/api/markets/BTC-'+date_curr);
+    const futures2 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr2);
+    const futures3 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr3);
+    const futures4 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr4);
+
+    const ebasis = axios.get('https://ftx.com/api/markets/ETH/USD');
+    const efutures = axios.get('https://ftx.com/api/markets/ETH-'+date_curr);
+    const efutures2 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr2);
+    const efutures3 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr3);
+    const efutures4 = axios.get('https://ftx.com/api/markets/ETH-'+date_curr4);
+
+    axios.all([basis,futures,futures2,futures3,futures4,ebasis,efutures,efutures2,efutures3,efutures4]).then(axios.spread((...responses)=>{
+        const data = [];
+        const bitcoin = {};
+        bitcoin.price = responses[0].data.result.last;
+        bitcoin.futures = ((responses[1].data.result.last-responses[0].data.result.last)/responses[0].data.result.last*100).toFixed(2);
+        bitcoin.futures2 = ((responses[2].data.result.last-responses[0].data.result.last)/responses[0].data.result.last*100).toFixed(2);
+        bitcoin.futures3 = ((responses[3].data.result.last-responses[0].data.result.last)/responses[0].data.result.last*100).toFixed(2);
+        bitcoin.futures4 = ((responses[4].data.result.last-responses[0].data.result.last)/responses[0].data.result.last*100).toFixed(2);
+        data.push(bitcoin);
+        const ethereum = {};
+        ethereum.price = responses[5].data.result.last;
+        ethereum.futures = ((responses[6].data.result.last-responses[5].data.result.last)/responses[5].data.result.last*100).toFixed(2);
+        ethereum.futures2 = ((responses[7].data.result.last-responses[5].data.result.last)/responses[5].data.result.last*100).toFixed(2);
+        ethereum.futures3 = ((responses[8].data.result.last-responses[5].data.result.last)/responses[5].data.result.last*100).toFixed(2);
+        ethereum.futures4 = ((responses[9].data.result.last-responses[5].data.result.last)/responses[5].data.result.last*100).toFixed(2);
+        data.push(ethereum);
+        res.render('current',{data:data});
+    }))
+})
+
 app.get('/bitcoin',(req,res)=>{
 	const basis = axios.get('https://ftx.com/api/markets/BTC/USD/candles?resolution=86400');
 	const futures = axios.get('https://ftx.com/api/markets/BTC-'+date_curr+'/candles?resolution=86400');
 	const futures2 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr2+'/candles?resolution=86400');
 	const futures3 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr3+'/candles?resolution=86400');
-	const futures4 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr4+'/candles?resolution=86400')
+	const futures4 = axios.get('https://ftx.com/api/markets/BTC-'+date_curr4+'/candles?resolution=86400');
 
 axios.all([basis,futures, futures2, futures3, futures4]).then(axios.spread((...responses)=>{
     const resultBasis = responses[0];

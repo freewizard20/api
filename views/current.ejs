@@ -1,0 +1,22 @@
+<%- include('logoarea') %>
+<h1>현재 프리미엄</h1>
+<table border=1>
+    <tr>
+        <td>종류</td>
+        <td>가격</td>
+        <td>근월물</td>
+        <td>+3월물</td>
+        <td>+6월물</td>
+        <td>+9월물</td>
+    </tr>
+    <% for(let i = 0 ; i < data.length ; i++){ %>
+        <tr>
+            <td><%= i===0 ? '비트코인':'이더리움' %></td>
+            <td><%= data[i].price %></td>
+            <td><%= data[i].futures %></td>
+            <td><%= data[i].futures2 %></td>
+            <td><%= data[i].futures3 %></td>
+            <td><%= data[i].futures4 %></td>
+        </tr>
+    <% } %>
+</table>
