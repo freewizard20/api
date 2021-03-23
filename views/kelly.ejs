@@ -1,0 +1,33 @@
+<%- include('logoarea') %>
+<h1>캘리 비중 계산</h1>
+<input type="text" id="upamount"> 이익비율<br />
+<input type="text" id="uppercentage"> %
+<hr />
+<input type="text" id="downamount"> 손실비율<br />
+<input type="text" id="downpercentage"> %<br /><br />
+<button onclick="calculate()">계산결과</button>
+<div id="result"></div>
+<style>
+    #result{
+        font-size:18px;
+        font-weight:bold;
+        margin-top:15px;
+    }
+</style>
+<script>
+
+    document.getElementById('uppercentage').addEventListener('change',function(){
+        document.getElementById('downpercentage').value = 100 - document.getElementById('uppercentage').value;
+    })
+
+    function calculate(){
+        var upamount = document.getElementById('upamount').value;
+        var uppercentage = document.getElementById('uppercentage').value;
+        var downamount = document.getElementById('downamount').value;
+        var downpercentage = document.getElementById('downpercentage').value;
+
+        var result = (downamount * (downpercentage/100) - upamount * (uppercentage/100))/(upamount * downamount);
+        document.getElementById('result').innerHTML = -result;
+    }
+
+</script>

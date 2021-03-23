@@ -24,6 +24,10 @@ app.get('/',(req,res)=>{
 	}));
 });
 
+app.get('/kelly',(req,res)=>{
+    res.render('kelly');
+})
+
 const date_curr = '0326';
 const date_curr2 = '0625';
 const date_curr3 = '0924';
